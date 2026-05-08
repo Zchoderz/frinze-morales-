@@ -1,9 +1,12 @@
 :root {
-  --bg: #091413;
+  --bg: #030807;
+  /* Deeper, darker background */
   --text: #B0E4CC;
-  --text-muted: #408A71;
+  --text-muted: #366b58;
+  /* Slightly dimmer muted text */
   --accent: #B0E4CC;
-  --surface: #285A48;
+  --surface: #1e4537;
+  /* Darker surface color */
   --font-main: 'Inter', sans-serif;
   --font-heading: 'Outfit', sans-serif;
   --transition: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
@@ -88,6 +91,155 @@ body {
   border: 1px solid var(--text-muted);
   mix-blend-mode: normal;
   transition: all 0.3s ease-out;
+}
+
+/* Noise Gradient Shader Background */
+.bg-shader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  overflow: hidden;
+  background: var(--bg);
+  filter: url(#goo) blur(60px);
+  /* Applied Gooey Filter and reduced blur */
+  opacity: 0.6;
+  /* Reduced opacity for a darker tone */
+  /* Mask to fade out shader at the very bottom */
+  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+.bg-shader-blob {
+  position: absolute;
+  opacity: 0.6;
+  /* Increased blob visibility */
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+}
+
+.blob-1 {
+  background: var(--surface);
+  width: 80vw;
+  height: 80vw;
+  top: -30%;
+  left: -20%;
+  animation: blob-float 3s infinite alternate ease-in-out;
+}
+
+.blob-2 {
+  background: #1a3a2f;
+  width: 70vw;
+  height: 70vw;
+  bottom: -30%;
+  right: -20%;
+  border-radius: 60% 40% 30% 70% / 50% 60% 40% 60%;
+  animation: blob-float 4s infinite alternate-reverse ease-in-out;
+  animation-delay: -0.5s;
+}
+
+.blob-3 {
+  background: var(--accent);
+  width: 40vw;
+  height: 40vw;
+  top: 20%;
+  left: 60%;
+  opacity: 0.15;
+  border-radius: 50% 50% 20% 80% / 30% 70% 30% 70%;
+  animation: blob-float 3.5s infinite alternate ease-in-out;
+  animation-delay: -1s;
+}
+
+.blob-4 {
+  background: var(--text-muted);
+  width: 50vw;
+  height: 50vw;
+  bottom: 10%;
+  left: 10%;
+  opacity: 0.2;
+  border-radius: 30% 70% 70% 30% / 50% 30% 70% 50%;
+  animation: blob-float 5s infinite alternate-reverse ease-in-out;
+  animation-delay: -1.5s;
+}
+
+.blob-5 {
+  background: #2a5a48;
+  width: 60vw;
+  height: 60vw;
+  top: 40%;
+  left: -10%;
+  opacity: 0.3;
+  border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%;
+  animation: blob-float 4.5s infinite alternate ease-in-out;
+  animation-delay: -2s;
+}
+
+.blob-6 {
+  background: var(--surface);
+  width: 35vw;
+  height: 35vw;
+  top: 10%;
+  left: 40%;
+  opacity: 0.2;
+  border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%;
+  animation: blob-float 3.2s infinite alternate-reverse ease-in-out;
+  animation-delay: -2.5s;
+}
+
+.blob-7 {
+  background: var(--accent);
+  width: 45vw;
+  height: 45vw;
+  bottom: 20%;
+  right: 30%;
+  opacity: 0.15;
+  border-radius: 60% 40% 70% 30% / 30% 60% 40% 70%;
+  animation: blob-float 4.2s infinite alternate ease-in-out;
+  animation-delay: -3s;
+}
+
+.blob-8 {
+  background: #1a3a2f;
+  width: 55vw;
+  height: 55vw;
+  top: 60%;
+  right: 10%;
+  opacity: 0.25;
+  border-radius: 30% 70% 40% 60% / 70% 40% 60% 30%;
+  animation: blob-float 3.8s infinite alternate-reverse ease-in-out;
+  animation-delay: -3.5s;
+}
+
+@keyframes blob-float {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+
+  33% {
+    transform: translate(5vw, -3vh) rotate(15deg) scale(1.05);
+  }
+
+  66% {
+    transform: translate(-3vw, 5vh) rotate(-10deg) scale(0.95);
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+}
+
+.bg-noise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  background: url('https://grainy-gradients.vercel.app/noise.svg');
+  opacity: 0.05;
+  mix-blend-mode: overlay;
 }
 
 /* Preloader */
@@ -749,7 +901,7 @@ body {
 /* Site Footer */
 .site-footer {
   padding: 10rem 0 4rem;
-  background-color: var(--bg);
+  background-color: transparent;
   position: relative;
   overflow: hidden;
   border-top: 1px solid rgba(255, 255, 255, 0.03);
@@ -812,24 +964,24 @@ body {
 }
 
 .magnetic-link {
-  color: var(--text-muted);
-  /* Dimmed by default */
+  color: rgba(176, 228, 204, 0.7);
   text-decoration: none;
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 1px;
   position: relative;
-  transition: all 0.4s var(--transition);
+  transition: all 0.2s ease-out;
+  text-shadow: 0 0 5px rgba(176, 228, 204, 0.2); /* Subtle default glow */
 }
 
 .footer-social-links:hover .magnetic-link {
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
 .footer-social-links .magnetic-link:hover {
   color: var(--accent);
   opacity: 1;
-  text-shadow: 0 0 15px var(--accent);
+  text-shadow: 0 0 15px var(--accent), 0 0 30px rgba(176, 228, 204, 0.3); /* Intense neon glow */
 }
 
 .time-display {

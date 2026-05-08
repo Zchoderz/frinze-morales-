@@ -342,3 +342,68 @@ if (photoModal) {
   });
 }
 
+// Enhanced Global Proximity Magnetic Effect (Desktop Only)
+const initMagnetic = () => {
+  if (window.innerWidth < 968) return;
+
+  const magneticElements = document.querySelectorAll('.magnetic-wrap');
+  
+  // Remove CSS transitions that might conflict with GSAP
+  magneticElements.forEach(el => {
+    const item = el.querySelector('.magnetic-item') || el;
+    item.style.transition = 'none';
+  });
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+
+    magneticElements.forEach(element => {
+      const item = element.querySelector('.magnetic-item') || element;
+      const rect = element.getBoundingClientRect();
+      
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      const dx = clientX - centerX;
+      const dy = clientY - centerY;
+      const distance = Math.hypot(dx, dy);
+      
+      const isTitle = element.classList.contains('hero-title-wrapper');
+      const threshold = isTitle ? 1000 : 400; 
+      const strength = isTitle ? 0.4 : 0.6; // Balanced pull for the title
+      
+      if (distance < threshold) {
+        const power = (threshold - distance) / threshold;
+        const xMove = dx * strength * power; 
+        const yMove = dy * strength * power;
+        
+        gsap.to(item, {
+          x: xMove,
+          y: yMove,
+          duration: 0.6,
+          ease: "power2.out",
+          overwrite: true
+        });
+      } else {
+        gsap.to(item, {
+          x: 0,
+          y: 0,
+          duration: 1.5,
+          ease: "elastic.out(1, 0.3)",
+          overwrite: true
+        });
+      }
+    });
+  };
+
+  window.removeEventListener('mousemove', handleMouseMove); // Clean up just in case
+  window.addEventListener('mousemove', handleMouseMove);
+};
+
+// Initialize after preloader or immediately
+if (document.readyState === 'complete') {
+  initMagnetic();
+} else {
+  window.addEventListener('load', initMagnetic);
+}
+
