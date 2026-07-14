@@ -1,358 +1,900 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Frinze Jhun Morales | Web Developer</title>
-  <meta name="description"
-    content="Personal portfolio of Frinze Jhun Morales, a web developer building modern projects with clean, efficient code and AI-assisted tools." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Outfit:wght@300;400;700;900&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon"
-    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%23B0E4CC%22 font-family=%22Inter%22 font-weight=%22900%22>F</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>about.html - Frinze Jhun Morales</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23111111'/%3E%3Ctext x='50' y='62' font-size='52' fill='%23ffffff' font-family='Arial,Helvetica,sans-serif' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+        :root {
+            --bg-darker: #111111;
+            --bg-dark: #161616;
+            --bg-sidebar: #1a1a1a;
+            --bg-activity: #222222;
+            --tab-active: #161616;
+            --tab-inactive: #212121;
+            --text-main: #aaaaaa;
+            --text-white: #ffffff;
+            --text-muted: #5e5e5e;
+            --accent-blue: #007acc;
+            --syntax-const: #569cd6;
+            --syntax-new: #c586c0;
+            --syntax-string: #4ec9b0;
+        }
 
-  <!-- GSAP & Lenis -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow: auto;
+        }
+
+        .vscode-container {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        /* --- TITLE BAR --- */
+        .title-bar {
+            background-color: var(--bg-darker);
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            font-size: 12px;
+            color: var(--text-muted);
+            border-bottom: 1px solid #222;
+            user-select: none;
+        }
+        .window-controls { display: flex; gap: 8px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; }
+        .dot-red { background-color: #ff5f56; }
+        .dot-yellow { background-color: #ffbd2e; }
+        .dot-green { background-color: #27c93f; }
+
+        /* --- LAYOUT CORES --- */
+        .main-body { display: flex; flex: 1; overflow: hidden; }
+
+        /* Activity Bar (Far Left Icon tray) */
+        .activity-bar {
+            background-color: var(--bg-activity);
+            width: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            user-select: none;
+            border-right: 1px solid #222;
+        }
+        .activity-icons { display: flex; flex-direction: column; gap: 25px; color: var(--text-muted); font-size: 20px; }
+        .activity-icons i { transition: color 0.2s; position: relative; }
+        .activity-icons i:hover, .activity-icons i.active { color: #fff; cursor: pointer; }
+        .activity-icons i.active::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background-color: var(--accent-blue);
+        }
+
+        /* Sidebar File Tree UI Panels */
+        .sidebar {
+            background-color: var(--bg-sidebar);
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            font-size: 13px;
+            border-right: 1px solid #222;
+            user-select: none;
+        }
+        .sidebar-title {
+            padding: 10px 20px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+        .tree-folder { padding: 4px 15px; font-weight: bold; color: #d4d4d4; font-size: 11px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; margin-top: 5px; }
+        .tree-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 25px;
+            cursor: pointer;
+            gap: 8px;
+            color: var(--text-main);
+            transition: background 0.15s;
+        }
+        .tree-item:hover { background-color: #242424; }
+        .tree-item.active { background-color: #2a2a2a; color: #fff; }
+        .indent { padding-left: 38px; }
+
+        /* Document Editor Areas */
+        .editor-workspace { flex: 1; display: flex; flex-direction: column; background-color: var(--bg-dark); overflow: hidden; }
+
+        /* Tab Switch Containers Layout */
+        .tabs-container { background-color: var(--bg-darker); display: flex; height: 35px; border-bottom: 1px solid #222; user-select: none; overflow-x: auto; }
+        .tabs-container::-webkit-scrollbar { display: none; }
+        .tab {
+            background-color: var(--tab-inactive);
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            border-right: 1px solid #141414;
+            cursor: pointer;
+            height: 100%;
+            transition: background 0.2s, color 0.2s;
+        }
+        .tab:hover { background-color: #282828; color: #ccc; }
+        .tab.active { background-color: var(--tab-active); color: #fff; border-top: 2px solid var(--accent-blue); }
+        .tab .close-btn { font-size: 10px; border-radius: 3px; padding: 2px; }
+        .tab .close-btn:hover { background-color: #333; color: #ff5f56; }
+
+        .breadcrumbs { background-color: var(--bg-dark); padding: 6px 20px; font-size: 11px; color: var(--text-muted); border-bottom: 1px solid #222; user-select: none; }
+
+        /* Code Contents Viewport */
+        .code-window { flex: 1; padding: 30px; overflow-y: auto; position: relative; }
+        .code-block { display: none; opacity: 0; }
+        .code-block.active { display: block; }
+        .file-comment { color: var(--text-muted); font-size: 14px; margin-bottom: 25px; font-family: monospace; }
+
+        /* Styled Large Headlines */
+        .headline-statement {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--text-white);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        .headline-statement .tag { color: #569cd6; }
+        .headline-statement .attr { color: #9cdcfe; }
+        .headline-statement .string { color: #ce9178; }
+
+        .bio-description { font-size: 16px; line-height: 1.6; max-width: 700px; color: #a5a5a5; margin-bottom: 30px; }
+
+        /* Metadata Pill Tags badges */
+        .pills-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
+        .pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; display: flex; align-items: center; gap: 6px; border: 1px solid; text-transform: capitalize; }
+        .pill-opportunities { background-color: rgba(76, 175, 80, 0.08); color: #4caf50; border-color: rgba(76, 175, 80, 0.25); }
+        .pill-awardee { background-color: rgba(255, 193, 7, 0.08); color: #ffc107; border-color: rgba(255, 193, 7, 0.25); }
+
+
+        /* Embedded Terminal Engine Panel Layout styles */
+        .terminal-box {
+            background: #111;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 540px;
+            margin: 0 auto 32px;
+            box-shadow: 0 18px 36px rgba(0,0,0,0.22);
+            overflow: hidden;
+        }
+        .terminal-header {
+            background: #141414;
+            padding: 12px 16px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            user-select: none;
+        }
+        .terminal-header .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .terminal-header .header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--text-muted);
+        }
+        .terminal-header .header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .terminal-header .dot {
+            width: 10px;
+            height: 10px;
+        }
+        .terminal-body {
+            padding: 18px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #d0d7df;
+            min-height: 150px;
+            background: #101010;
+        }
+        .prompt-line { color: #4ec9b0; font-weight: 700; }
+        .prompt-cmd { color: #f8f8f2; }
+        .terminal-history {
+            margin-bottom: 14px;
+            max-height: 180px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .terminal-history div {
+            margin-bottom: 10px;
+        }
+        .terminal-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            background: #121212;
+        }
+        .terminal-input-row input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: inherit;
+            flex: 1;
+            outline: none;
+            caret-color: #4ec9b0;
+        }
+        .terminal-input-row input::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+
+        /* Action Nav Elements Buttons styling */
+        .btn-container { display: flex; gap: 15px; margin-bottom: 40px; }
+        .btn { padding: 12px 26px; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; transition: transform 0.2s, opacity 0.2s; display: flex; align-items: center; gap: 8px; }
+        .btn:hover { opacity: 0.95; transform: translateY(-1px); }
+        .btn:active { transform: translateY(1px); }
+        .btn-primary { background-color: #2ea44f; color: #fff; border: none; }
+        .btn-secondary { background-color: transparent; color: #fff; border: 1px solid #3a3a3a; }
+
+        /* Lists layout histories items rules */
+        .xp-item { margin-bottom: 25px; border-left: 2px solid #2ea44f; padding-left: 20px; position: relative; }
+        .xp-title { color: #fff; font-size: 16px; font-weight: bold; }
+        .xp-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-family: monospace; }
+        .xp-desc { font-size: 14px; color: #999; line-height: 1.6; margin-bottom: 12px; }
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            color: #4ec9b0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .project-link:hover { text-decoration: underline; }
+        .activity-icons i.disabled {
+            opacity: 0.45;
+            cursor: default;
+            pointer-events: none;
+        }
+        .project-preview-box {
+            display: block;
+            border: 1px solid #2f2f2f;
+            border-radius: 8px;
+            background: #101010;
+            padding: 12px;
+            max-width: 780px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+        .project-preview-box:hover {
+            transform: translateY(-3px);
+            border-color: #3d8de1;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+        }
+        .preview-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .preview-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            background: #fff;
+            transition: transform 0.25s ease;
+        }
+        .project-preview-box:hover .preview-image {
+            transform: scale(1.01);
+        }
+        .preview-note {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #8a8a8a;
+        }
+        .section-title { font-size: 24px; font-weight: bold; color: var(--text-white); display: flex; align-items: center; gap: 10px; margin-bottom: 25px;}
+        .code-window { flex: 1; padding: 24px; overflow-y: auto; position: relative; }
+        .headline-statement { font-size: 32px; }
+        .bio-description { font-size: 15px; max-width: 100%; }
+        .terminal-box { width: 100%; max-width: 100%; }
+        .btn-container { flex-wrap: wrap; gap: 12px; }
+        .btn { min-width: 160px; justify-content: center; }
+        .btn-primary { background-color: #2ea44f; color: #fff; border: none; }
+        .btn-secondary { background-color: rgba(255,255,255,0.05); color: #fff; border: 1px solid #3a3a3a; }
+        .xp-item { margin-bottom: 22px; padding: 18px; border-left: none; border: 1px solid #222; border-radius: 10px; background: rgba(255,255,255,0.02); }
+        .xp-item:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(0,0,0,0.1); }
+        .xp-item { transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+
+        @media (max-width: 1130px) {
+            .sidebar { width: 210px; }
+            .activity-bar { width: 45px; }
+            .headline-statement { font-size: 28px; }
+            .project-preview-box { max-width: 100%; }
+        }
+        @media (max-width: 900px) {
+            .main-body { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #222; }
+            .activity-bar { width: 100%; flex-direction: row; justify-content: space-between; padding: 10px 15px; border-right: none; border-bottom: 1px solid #222; }
+            .activity-icons { flex-direction: row; gap: 16px; }
+            .editor-workspace { overflow: visible; }
+            .code-window { padding: 18px; }
+            .tabs-container { overflow-x: auto; }
+            .btn-container { width: 100%; justify-content: stretch; }
+            .btn { width: 100%; max-width: none; }
+        }
+        @media (max-width: 680px) {
+            .title-bar { flex-direction: column; align-items: stretch; height: auto; padding: 10px; gap: 8px; }
+            .window-title { font-size: 12px; }
+            .breadcrumbs { padding: 10px 14px; }
+            .headline-statement { font-size: 24px; }
+            .bio-description { font-size: 14px; }
+            .project-preview-box { padding: 10px; }
+            .preview-image { height: 220px; }
+            .xp-item { padding: 16px; }
+        }
+        .preview-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .preview-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            background: #fff;
+        }
+        .preview-note {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #8a8a8a;
+        }
+
+        .section-title { font-size: 24px; font-weight: bold; color: var(--text-white); display: flex; align-items: center; gap: 10px; margin-bottom: 25px;}
+
+        /* CSS Properties Display Helper */
+        .css-selector { color: #d7ba7d; font-family: monospace; font-size: 14px; }
+        .css-prop { color: #9cdcfe; }
+        .css-val { color: #ce9178; }
+
+        /* --- BOTTOM STATUS LINE STRIP --- */
+        .status-bar {
+            background-color: var(--accent-blue);
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            font-size: 12px;
+            color: #fff;
+            user-select: none;
+        }
+        .status-left, .status-right { display: flex; align-items: center; gap: 15px; }
+        .orientation-warning {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.94);
+            color: #fff;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            text-align: center;
+            padding: 20px;
+        }
+        .orientation-warning.active { display: flex; }
+        .orientation-content {
+            max-width: 380px;
+            padding: 30px;
+            border-radius: 22px;
+            background: rgba(18, 18, 18, 0.96);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .orientation-content h2 {
+            margin: 20px 0 10px;
+            font-size: 22px;
+            color: #fff;
+        }
+        .orientation-content p {
+            color: #cbd1dc;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        .cursor-dot {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(0, 123, 255, 0.92);
+            box-shadow: 0 0 24px rgba(0, 123, 255, 0.28);
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(0.9);
+            transition: transform 0.14s ease-out, opacity 0.22s ease;
+            z-index: 10000;
+            opacity: 0;
+            mix-blend-mode: screen;
+        }
+        .cursor-dot.cursor-active { transform: translate(-50%, -50%) scale(1.4); }
+        body.has-custom-cursor { cursor: none; }
+        body.has-custom-cursor .cursor-dot { opacity: 1; }
+        @media (max-width: 900px) {
+            .cursor-dot { display: none; }
+            body.has-custom-cursor { cursor: default; }
+        }
+    </style>
 </head>
-
 <body>
-  <!-- Custom Cursor -->
-  <div class="cursor-dot"></div>
-  <div class="cursor-outline"></div>
 
-  <!-- Noise Gradient Shader Background -->
-  <div class="bg-shader-container">
-    <div class="bg-shader-blob blob-1"></div>
-    <div class="bg-shader-blob blob-2"></div>
-    <div class="bg-shader-blob blob-3"></div>
-    <div class="bg-shader-blob blob-4"></div>
-    <div class="bg-shader-blob blob-5"></div>
-    <div class="bg-shader-blob blob-6"></div>
-    <div class="bg-shader-blob blob-7"></div>
-    <div class="bg-shader-blob blob-8"></div>
-  </div>
-  <div class="bg-noise"></div>
+<div class="orientation-warning" id="orientation-warning">
+    <div class="orientation-content">
+        <i class="fa-solid fa-phone fa-3x"></i>
+        <h2>Please rotate your device</h2>
+        <p>For the best experience, please turn your phone to landscape mode.</p>
+    </div>
+</div>
+<div class="cursor-dot" id="cursor-dot"></div>
 
-  <!-- SVG Filter for Liquid/Gooey Effect -->
-  <svg style="display: none;">
-    <defs>
-      <filter id="goo">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
-        <feBlend in="SourceGraphic" in2="goo" />
-      </filter>
-    </defs>
-  </svg>
-
-  <!-- Preloader with Diagonal Tile Effect -->
-  <div id="loader" class="loader">
-    <div class="loader-tiles-container">
-      <!-- Tiles generated via JS for perfect grid -->
+<div class="vscode-container">
+    
+    <div class="title-bar">
+        <div class="window-controls">
+            <div class="dot dot-red" onclick="alert('Closing portfolio instance... Goodbye!')"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+        </div>
+        <div class="window-title" id="window-title">about.html - frinze-morales/about.html</div>
+        <div></div>
     </div>
 
-    <div class="loader-content">
-      <div class="loader-percent-wrap">
-        <span class="loader-percent">0</span>
-        <span class="percent-symbol">%</span>
-      </div>
-      <div class="loader-bar-wrapper">
-        <div class="loader-bar"></div>
-      </div>
-      <div class="loader-status">INITIALIZING CORE</div>
-    </div>
-  </div>
-
-  <main>
-    <!-- Hero -->
-    <section id="hero" class="hero">
-      <div class="hero-top-info">
-        <div class="site-logo">Frinze Jhun Morales</div>
-        <div class="location">Based in Philippines</div>
-      </div>
-
-      <!-- Vertical Status Badge (Hero Only) -->
-      <div class="site-logo-vertical">
-        <span class="status-dot"></span>
-        OPEN FOR WORK
-      </div>
-
-      <div class="container hero-content">
-        <div class="hero-title-wrapper magnetic-wrap">
-          <h1 class="hero-title magnetic-item">
-            <span class="jr-tag">Jr.</span>
-            <span class="line">FULL-STACK
-            </span>
-            <span class="line">DEVELOPER</span>
-          </h1>
-        </div>
-
-        <div class="hero-bottom-row">
-          <p class="hero-intro">
-            Creating high-end digital experiences with modern tools and clean code.
-          </p>
-          <div class="hero-cta">
-            <a href="#projects" class="btn-magnetic">VIEW PROJECTS</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="scroll-indicator">
-        <div class="mouse">
-          <div class="wheel"></div>
-        </div>
-        <span>Scroll Down</span>
-      </div>
-    </section>
-
-    <!-- About -->
-    <section id="about" class="section">
-      <div class="container section-inner">
-        <div class="section-header">
-          <p class="section-label">01 / About</p>
-          <h2>ABOUT ME</h2>
-        </div>
-        <div class="about-bento">
-          <div class="bento-item main-bio">
-            <p class="large-text">
-              I am <strong>Frinze Jhun Morales</strong>, a 20-year-old Full-Stack Developer.
-              Since <strong>Oct 2023</strong>, I have 1 launched and 1 currently ongoing project.
-            </p>
-            <div class="bento-actions">
-              <a href="FRINZE_MORALES_CV.pdf" download="Frinze_Jhun_Morales_CV.pdf" class="btn-small">DOWNLOAD
-                RESUME</a>
-              <a href="#skills" class="btn-small btn-outline">VIEW STACKS</a>
+    <div class="main-body">
+        
+        <div class="activity-bar">
+            <div class="activity-icons">
+                <i class="fa-regular fa-copy active" onclick="toggleSidebarView()"></i>
+                <i class="fa-solid fa-magnifying-glass" onclick="focusTerminalCmd()"></i>
+                <i class="fa-code-branch fa-solid disabled" title="Source control (disabled)"></i>
+                <i class="fa-solid fa-diagram-project disabled" title="Additional action (disabled)"></i>
+                <i class="fa-solid fa-envelope" onclick="openFile('contact.css')"></i>
             </div>
-          </div>
-
-          <div class="bento-item education-card">
-            <p class="section-label">BACKGROUND</p>
-            <p>
-              Graduated <strong>ICT Strand</strong> from <strong>The First Uniting Christian School</strong> (2025).
-              Honored as <strong>"Best in Capstone"</strong> for technical excellence.
-            </p>
-            <div class="bento-actions">
-              <a href="#" class="btn-small btn-outline open-gallery">VIEW CREDENTIALS</a>
+            <div class="activity-icons">
+                <i class="fa-solid fa-gear" onclick="alert('Theme locked to: VS Code Dark Modern Pro.')"></i>
             </div>
-          </div>
-
-          <div class="bento-item tools-card">
-            <p class="section-label">WORKFLOW</p>
-            <p>
-              Focused on <strong>rapid development cycles</strong> and architectural precision. I leverage modern
-              environments to streamline my process and deliver
-              <strong>high-performance, scalable code</strong> at scale.
-            </p>
-          </div>
         </div>
-      </div>
-    </section>
 
-    <!-- Projects -->
-    <section class="section">
-      <div id="projects" class="container section-inner">
-        <div class="section-header">
-          <p class="section-label">02 / Work</p>
-          <h2>MY PROJECTS</h2>
-        </div>
-        <div class="projects-grid">
-          <article class="project-card">
-            <div class="project-image-box">
-              <video autoplay muted loop playsinline class="project-video">
-                <source src="bigbrew sample vid.mp4" type="video/mp4">
-                <!-- Fallback image if video fails to load -->
-                <img src="https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=2000&auto=format&fit=crop"
-                  alt="Big Brew Web System">
-              </video>
+        <div class="sidebar" id="explorer-sidebar">
+            <div class="sidebar-title">Explorer</div>
+            <div class="tree-folder"><i class="fa-solid fa-chevron-down"></i> portfolio</div>
+            <div class="tree-folder indent" style="margin-top:0;"><i class="fa-solid fa-chevron-down"></i> src</div>
+            
+            <div class="tree-item indent active" id="tree-about.html" onclick="openFile('about.html')">
+                <i class="fa-solid fa-code" style="color: #e34f26;"></i> about.html
             </div>
-            <div class="project-info">
-              <p class="project-stack">HTML • CSS • JS • PHP • PYTHON • SQL • XAMPP</p>
-              <h3>Big Brew Web System</h3>
-              <p class="project-description">
-                Awarded <strong>Best in Capstone</strong>, this is a comprehensive full-stack platform built with XAMPP.
-                It features a custom-engineered database and secure admin pages for total business management.
-              </p>
-              <div class="magnetic-wrap">
-                <a href="#" class="btn-magnetic btn-play-video">View Project</a>
-              </div>
+            <div class="tree-item indent" id="tree-projects.html" onclick="openFile('projects.html')">
+                <i class="fa-solid fa-code" style="color: #e34f26;"></i> projects.html
             </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Skills -->
-    <section id="skills" class="section skills-section">
-      <div class="container section-inner">
-        <div class="section-header">
-          <p class="section-label">03 / Skills</p>
-          <h2>TECHNICAL ARSENAL</h2>
-        </div>
-      </div>
-
-      <div class="skills-carousel-container">
-        <!-- Row 1: Core Stack -->
-        <div class="skills-row">
-          <div class="skills-track track-left">
-            <span class="chip">HTML5</span>
-            <span class="chip">CSS3</span>
-            <span class="chip">JAVASCRIPT</span>
-            <span class="chip">PHP</span>
-            <span class="chip">PYTHON</span>
-            <span class="chip">SQL</span>
-            <span class="chip">XAMPP</span>
-            <span class="chip">MYSQL</span>
-            <!-- Set 2 -->
-            <span class="chip">HTML5</span>
-            <span class="chip">CSS3</span>
-            <span class="chip">JAVASCRIPT</span>
-            <span class="chip">PHP</span>
-            <span class="chip">PYTHON</span>
-            <span class="chip">SQL</span>
-            <span class="chip">XAMPP</span>
-            <span class="chip">MYSQL</span>
-            <!-- Set 3 -->
-            <span class="chip">HTML5</span>
-            <span class="chip">CSS3</span>
-            <span class="chip">JAVASCRIPT</span>
-            <span class="chip">PHP</span>
-            <span class="chip">PYTHON</span>
-            <span class="chip">SQL</span>
-            <span class="chip">XAMPP</span>
-            <span class="chip">MYSQL</span>
-            <!-- Set 4 -->
-            <span class="chip">HTML5</span>
-            <span class="chip">CSS3</span>
-            <span class="chip">JAVASCRIPT</span>
-            <span class="chip">PHP</span>
-            <span class="chip">PYTHON</span>
-            <span class="chip">SQL</span>
-            <span class="chip">XAMPP</span>
-            <span class="chip">MYSQL</span>
-          </div>
+            <div class="tree-item indent" id="tree-experience.md" onclick="openFile('experience.md')">
+                <i class="fa-brands fa-markdown" style="color: #51a1ff;"></i> experience.md
+            </div>
+            <div class="tree-item indent" id="tree-education.md" onclick="openFile('education.md')">
+                <i class="fa-brands fa-markdown" style="color: #51a1ff;"></i> education.md
+            </div>
+            <div class="tree-item indent" id="tree-skills.json" onclick="openFile('skills.json')">
+                <i class="fa-solid fa-file-code" style="color: #cbd435;"></i> skills.json
+            </div>
+            <div class="tree-item indent" id="tree-contact.css" onclick="openFile('contact.css')">
+                <i class="fa-solid fa-hashtag" style="color: #569cd6;"></i> contact.css
+            </div>
         </div>
 
-        <!-- Row 2: AI & Tools -->
-        <div class="skills-row">
-          <div class="skills-track track-right">
-            <span class="chip chip-accent">CURSOR</span>
-            <span class="chip chip-accent">GSAP</span>
-            <span class="chip chip-accent">COPILOT</span>
-            <span class="chip chip-accent">ANTIGRAVITY</span>
-            <span class="chip chip-accent">VERCEL</span>
-            <span class="chip chip-accent">GIT</span>
-            <!-- Set 2 -->
-            <span class="chip chip-accent">CURSOR</span>
-            <span class="chip chip-accent">GSAP</span>
-            <span class="chip chip-accent">COPILOT</span>
-            <span class="chip chip-accent">ANTIGRAVITY</span>
-            <span class="chip chip-accent">VERCEL</span>
-            <span class="chip chip-accent">GIT</span>
-            <!-- Set 3 -->
-            <span class="chip chip-accent">CURSOR</span>
-            <span class="chip chip-accent">GSAP</span>
-            <span class="chip chip-accent">COPILOT</span>
-            <span class="chip chip-accent">ANTIGRAVITY</span>
-            <span class="chip chip-accent">VERCEL</span>
-            <span class="chip chip-accent">GIT</span>
-            <!-- Set 4 -->
-            <span class="chip chip-accent">CURSOR</span>
-            <span class="chip chip-accent">GSAP</span>
-            <span class="chip chip-accent">COPILOT</span>
-            <span class="chip chip-accent">ANTIGRAVITY</span>
-            <span class="chip chip-accent">VERCEL</span>
-            <span class="chip chip-accent">GIT</span>
-          </div>
+        <div class="editor-workspace">
+            
+            <div class="tabs-container" id="tabs-wrapper-row">
+                </div>
+
+            <div class="breadcrumbs" id="breadcrumb-el">
+                portfolio &gt; src &gt; about.html
+            </div>
+
+            <div class="code-window" id="code-window-view">
+                
+                <div class="code-block active" id="view-about.html">
+                    <div class="file-comment">&lt;!-- about.html – Professional Profile Intro --&gt;</div>
+                    
+                    <div class="headline-statement">
+                        &lt;<span class="tag">h1</span> <span class="attr">class</span>=<span class="string">"developer-name"</span>&gt;Frinze Jhun Morales&lt/<span class="tag">h1</span>&gt;
+                    </div>
+
+                    <div class="bio-description">
+                        I am a focused <strong>Web Developer</strong> based in General Trias, Cavite. I specialize in modernizing layouts, refining user interfaces, and upgrading front-end code bases to match brand standards and optimize performance.
+                    </div>
+
+                    <div class="pills-container">
+                        <div class="pill pill-opportunities">
+                            <i class="fa-solid fa-circle" style="font-size: 8px; animation: pulse 1.5s infinite;"></i> open to web developer roles + freelance work
+                        </div>
+                        <div class="pill pill-awardee">
+                            <i class="fa-solid fa-trophy"></i> Best in Capstone Awardee
+                        </div>
+                    </div>
+
+                    <div class="terminal-box">
+                        <div class="terminal-header">
+                            <div class="header-left">
+                                <div class="dot dot-red"></div>
+                                <div class="dot dot-yellow"></div>
+                                <div class="dot dot-green"></div>
+                            </div>
+                        </div>
+                        <div class="terminal-body" onclick="focusTerminalCmd()">
+                            <div class="terminal-history" id="term-history-log">
+                                <div>Welcome to Frinze's terminal. Type <span style="color:#ffc107;">help</span> for commands or <span style="color:#4ec9b0;">about</span> to learn more.</div>
+                            </div>
+                            <div class="terminal-input-row">
+                                <span class="prompt-line">➔ ~/portfolio</span>
+                                <input type="text" id="terminal-shell-input" autocomplete="off" placeholder="type a command..." autofocus>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-container">
+                        <a href="Frinze-CV.pdf" download class="btn btn-primary">Download CV <i class="fa-solid fa-download"></i></a>
+                        <a href="#" class="btn btn-secondary" onclick="openFile('projects.html')">View Projects</a>
+                    </div>
+                </div>
+
+                <div class="code-block" id="view-projects.html">
+                    <div class="file-comment">&lt;!-- projects.html – Active Web Platforms & Builds --&gt;</div>
+                    
+                    <div class="section-title">Development Work</div>
+
+                    <div class="xp-item">
+                        <div class="xp-title">BigBrew E-Commerce Platform</div>
+                        <div class="xp-meta">Stack: HTML, CSS, JavaScript, PHP, MySQL (XAMPP)</div>
+                        <div class="xp-desc">A full-stack e-commerce web platform engineered for secure user checkout flows, administrative analytics dashboard systems, and automated inventory management setups. Awarded <strong>Best in Capstone</strong>.</div>
+                        <a href="https://bigbrew.my-board.org/index.php" target="_blank" rel="noopener noreferrer" class="project-link">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open BigBrew website
+                        </a>
+                        <div class="project-preview-box">
+                            <div class="preview-label">Website preview</div>
+                            <img class="preview-image" src="https://image.thum.io/get/width/1200/crop/1200/https://bigbrew.my-board.org/index.php" alt="BigBrew website preview" loading="lazy">
+                            <div class="preview-note">
+                                <a href="https://bigbrew.my-board.org/index.php" target="_blank" rel="noopener noreferrer" style="color:#4ec9b0; text-decoration:none;">Open BigBrew website in a new tab</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="xp-item">
+                        <div class="xp-title">Krono Property Management</div>
+                        <div class="xp-meta">Role: Web Developer | Started: April 2025 | Status: Ongoing</div>
+                        <div class="xp-desc">I started as a web developer at Krono Property Management in April 2025, and the project is still ongoing as I help improve the website's layout, user experience, and overall presentation.</div>
+                        <a class="project-preview-box" href="Screenshot (8).png" target="_blank" rel="noopener noreferrer">
+                            <div class="preview-label">Preview image</div>
+                            <img class="preview-image" src="Screenshot (8).png" alt="Krono Property Management preview" loading="lazy">
+                            <div class="preview-note">Click to open full image in a new tab. Replace this file any time.</div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="code-block" id="view-experience.md">
+                    <div class="file-comment"></div>
+                    
+                    <div class="section-title">Professional Milestones</div>
+
+                    <div class="xp-item">
+                        <div class="xp-title">Web Developer — Krono Property Management</div>
+                        <div class="xp-meta">2025 - Present</div>
+                        <div class="xp-desc">Redesigning and modernizing the company's website with HTML, CSS, and JavaScript to improve overall user experience and visual appeal. Independently managing layout configurations, UI refinement, and client alignment pipelines.</div>
+                    </div>
+
+                    <div class="xp-item">
+                        <div class="xp-title">Capstone Project Lead — First Uniting Christian School</div>
+                        <div class="xp-meta">2024 - 2025</div>
+                        <div class="xp-desc">Orchestrated system requirements analysis, waterfall design frameworks, and deployment operations alongside a 9-person research unit to produce the functional BigBrew e-commerce sales engine pipeline.</div>
+                    </div>
+                </div>
+
+                <div class="code-block" id="view-education.md">
+                    <div class="file-comment"></div>
+                    
+                    <div class="section-title">Education System History</div>
+
+                    <div class="xp-item">
+                        <div class="xp-title">First Uniting Christian School — Senior High School</div>
+                        <div class="xp-meta">ICT Strand | Graduated: 2025</div>
+                        <div class="xp-desc">Specialized training in computational logic pipelines and hardware layouts. Awarded <strong>Best in Capstone</strong> honors for functional, cross-platform e-commerce developments.</div>
+                    </div>
+                </div>
+
+                <div class="code-block" id="view-skills.json">
+                    <div class="file-comment">// skills.json – Fully mapped core engine competencies</div>
+                    <div class="terminal-box" style="max-width: 100%; box-shadow: none; background: #111;">
+                        <div class="terminal-body" style="font-size: 14px; line-height: 1.8;">
+                            {<br>
+                            &nbsp;&nbsp;<span class="const">"languages"</span>: [<span class="string">"HTML"</span>, <span class="string">"CSS"</span>, <span class="string">"JavaScript"</span>, <span class="string">"PHP"</span>, <span class="string">"Python"</span>, <span class="string">"Lua"</span>],<br>
+                            &nbsp;&nbsp;<span class="const">"database"</span>: [<span class="string">"MySQL"</span>],<br>
+                            &nbsp;&nbsp;<span class="const">"environments_and_tools"</span>: [<span class="string">"XAMPP"</span>, <span class="string">"Visual Studio Code"</span>, <span class="string">"Git/GitHub"</span>, <span class="string">"Vercel"</span>, <span class="string">"Roblox Studio"</span>],<br>
+                            &nbsp;&nbsp;<span class="const">"animation_libraries"</span>: [<span class="string">"GSAP (GreenSock Animation Platform)"</span>],<br>
+                            &nbsp;&nbsp;<span class="const">"design_and_media"</span>: [<span class="string">"Adobe Photoshop"</span>, <span class="string">"Canva"</span>],<br>
+                            &nbsp;&nbsp;<span class="const">"core_specialties"</span>: [<span class="string">"Web Development"</span>, <span class="string">"Responsive Layout Architecture"</span>, <span class="string">"UI/UX Fine-Tuning"</span>]<br>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block" id="view-contact.css">
+                    <div class="file-comment">/* contact.css – Communication & Networking Channels */</div>
+                    <div style="font-family: monospace; line-height: 1.8; font-size: 14px;">
+                        <span class="css-selector">.developer-contact-method</span> {<br>
+                        &nbsp;&nbsp;<span class="css-prop">Email</span>: <span class="css-val"><a href="https://mail.google.com/mail/?view=cm&fs=1&to=frinzeyt01@gmail.com&su=Hello%20Frinze&body=Hi%20Frinze%2C%0A%0AI%20would%20like%20to%20talk%20about%20a%20web%20project.%0A%0AThanks!" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">frinzeyt01@gmail.com</a></span>;<br>
+                        &nbsp;&nbsp;<span class="css-prop">Phone</span>: <span class="css-val"><a href="tel:+639760029750" style="color: inherit; text-decoration: underline;">+639760029750</a> &middot; <a href="https://wa.me/639760029750" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">WhatsApp</a></span>;<br>
+                        &nbsp;&nbsp;<span class="css-prop">Location</span>: <span class="css-val">"General Trias, Cavite, PH 4107"</span>;<br>
+                        &nbsp;&nbsp;<span class="css-prop">Instagram</span>: <span class="css-val"><a href="https://www.instagram.com/moralesfrinze/" target="_blank" style="color: inherit; text-decoration: underline;">instagram.com/moralesfrinze</a></span>;<br>
+                        &nbsp;&nbsp;<span class="css-prop">Facebook</span>: <span class="css-val"><a href="https://www.facebook.com/Frinze.Morales" target="_blank" style="color: inherit; text-decoration: underline;">facebook.com/Frinze.Morales</a></span>;<br>
+                        &nbsp;&nbsp;<span class="css-prop">LinkedIn</span>: <span class="css-val"><a href="https://www.linkedin.com/in/frinze-morales-329095363/" target="_blank" style="color: inherit; text-decoration: underline;">linkedin.com/in/frinze-morales-329095363</a></span>;<br>
+                        }
+                    </div>
+                </div>
+
+            </div>
         </div>
-      </div>
-    </section>
 
-
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <div class="footer-top">
-        <div class="footer-cta">
-          <p class="section-label">HAVE A PROJECT IN MIND?</p>
-          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=frinzeyt01@gmail.com&su=Project%20Inquiry%3A%20Let's%20Build%20Something%20Together&body=Hi%20Frinze%2C%20I'm%20interested%20in%20discussing%20a%20project%20with%20you."
-            target="_blank" class="big-footer-link">LET'S BUILD SOMETHING <span class="arrow">↗</span></a>
-        </div>
-      </div>
-
-      <div class="footer-main">
-        <div class="footer-column">
-          <p class="footer-label">PLATFORMS</p>
-          <div class="footer-social-links">
-            <a href="https://www.facebook.com/Frinze.Morales" target="_blank" class="magnetic-link">FACEBOOK</a>
-            <a href="https://www.instagram.com/moralesfrinze?igsh=ZjU0Ym9oYmZjenF3" target="_blank"
-              class="magnetic-link">INSTAGRAM</a>
-          </div>
-        </div>
-
-        <div class="footer-column">
-          <p class="footer-label">GET IN TOUCH</p>
-          <div class="footer-social-links">
-            <a href="https://www.linkedin.com/in/frinze-morales-329095363" target="_blank"
-              class="magnetic-link">LINKEDIN</a>
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=frinzeyt01@gmail.com&su=Project%20Inquiry&body=Hi%20Frinze%2C%20I'd%20like%20to%20collaborate%20on%20a%20project."
-              target="_blank" class="magnetic-link">EMAIL</a>
-            <a href="https://wa.me/639760029750" target="_blank" class="magnetic-link">+63 976 002 9750</a>
-          </div>
-        </div>
-
-        <div class="footer-column">
-          <p class="footer-label">LOCAL TIME</p>
-          <div id="local-time" class="time-display">00:00:00 PM PHT</div>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <div class="footer-watermark">FRINZE</div>
-        <div class="footer-credits">
-          <p>&copy; <span id="year"></span> DEVELOPED BY FRINZE JHUN MORALES.</p>
-          <p>BUILT WITH PASSION & PRECISION.</p>
-        </div>
-      </div>
     </div>
-  </footer>
 
-  <!-- Video Modal -->
-  <div class="video-modal">
-    <div class="video-modal-overlay"></div>
-    <div class="video-modal-content">
-      <button class="video-modal-close">&times;</button>
-      <video controls class="modal-video-player">
-        <source src="bigbrew sample vid.mp4" type="video/mp4">
-      </video>
+    <div class="status-bar">
+        <div class="status-left">
+            <span style="cursor:pointer;" onclick="window.open('https://github.com/frinze-morales','_blank')"><i class="fa-solid fa-code-branch"></i> main</span>
+            <span><i class="fa-solid fa-circle-check" style="color:#4caf50;"></i> Prettier Active</span>
+        </div>
+        <div class="status-right">
+            <span id="footer-lang">HTML</span>
+            <span>Spaces: 2</span>
+            <span>UTF-8</span>
+        </div>
     </div>
-  </div>
 
-  <!-- Photo Gallery Modal -->
-  <div class="photo-modal">
-    <div class="photo-modal-overlay"></div>
-    <div class="photo-modal-content">
-      <button class="photo-modal-close">&times;</button>
-      <div class="photo-slider">
-        <img src="imgs bigbrew/image.png" class="slider-img active">
-        <img src="imgs bigbrew/image copy.png" class="slider-img">
-        <img src="imgs bigbrew/483516457_4039125919694648_6648536570811790587_n (1).jpg" class="slider-img">
-        <img src="imgs bigbrew/484796999_1361022265052299_786888786907617110_n.jpg" class="slider-img">
-      </div>
-      <div class="slider-controls">
-        <button class="slider-prev">&#8592;</button>
-        <span class="slider-counter">1 / 4</span>
-        <button class="slider-next">&#8594;</button>
-      </div>
-    </div>
-  </div>
-  <script src="script.js"></script>
+</div>
+
+<script>
+    // System Configurations Mapping exact 6 requested tabs
+    let openFilesList = ['about.html', 'projects.html', 'experience.md', 'education.md', 'skills.json', 'contact.css'];
+    let currentlyActiveFile = 'about.html';
+    let sidebarOpenState = true;
+
+    window.addEventListener('DOMContentLoaded', () => {
+        renderEditorTabsHTML();
+        initTerminalEngine();
+
+        // Ensure the about view is shown on every page load
+        openFile('about.html');
+        initCustomCursor();
+        checkOrientation();
+        window.addEventListener('resize', checkOrientation);
+        window.addEventListener('orientationchange', checkOrientation);
+
+        // Initial drop animations
+        gsap.from(".sidebar", { x: -30, opacity: 0, duration: 0.6, ease: "power2.out" });
+        gsap.from(".code-window", { opacity: 0, y: 15, duration: 0.8, delay: 0.1, ease: "power2.out" });
+    });
+
+    // Tab Header Grid Renderer
+    function renderEditorTabsHTML() {
+        const wrapper = document.getElementById('tabs-wrapper-row');
+        wrapper.innerHTML = '';
+
+        openFilesList.forEach(file => {
+            let iconClass = "fa-solid fa-code";
+            let iconColor = "#e34f26";
+            if (file === 'experience.md' || file === 'education.md') { iconClass = "fa-brands fa-markdown"; iconColor = "#51a1ff"; }
+            if (file === 'skills.json') { iconClass = "fa-solid fa-brackets-curly"; iconColor = "#cbd435"; }
+            if (file === 'contact.css') { iconClass = "fa-solid fa-hashtag"; iconColor = "#569cd6"; }
+
+            const isActive = file === currentlyActiveFile ? 'active' : '';
+            
+            const tabMarkup = `
+                <div class="tab ${isActive}" onclick="openFile('${file}')" id="tab-header-${file}">
+                    <i class="${iconClass}" style="color: ${iconColor};"></i>
+                    <span>${file}</span>
+                    <i class="fa-solid fa-xmark close-btn" onclick="closeFileTab(event, '${file}')"></i>
+                </div>
+            `;
+            wrapper.insertAdjacentHTML('beforeend', tabMarkup);
+        });
+    }
+
+    // View Window Switcher Framework
+    function openFile(fileName) {
+        if (!openFilesList.includes(fileName)) {
+            openFilesList.push(fileName);
+        }
+        currentlyActiveFile = fileName;
+        renderEditorTabsHTML();
+
+        document.querySelectorAll('.tree-item').forEach(item => item.classList.remove('active'));
+        const sidebarTreeEl = document.getElementById(`tree-${fileName}`);
+        if(sidebarTreeEl) sidebarTreeEl.classList.add('active');
+
+        const targetPane = document.getElementById(`view-${fileName}`);
+
+        document.querySelectorAll('.code-block').forEach(block => block.classList.remove('active'));
+        if (targetPane) {
+            targetPane.classList.add('active');
+            gsap.fromTo(targetPane, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35, ease: "power1.out" });
+        }
+
+        document.getElementById('window-title').innerText = `${fileName} - frinze-morales/${fileName}`;
+        document.getElementById('breadcrumb-el').innerText = `portfolio > src > ${fileName}`;
+        
+        // Dynamic Footer Status Language Sync
+        let footerLang = document.getElementById('footer-lang');
+        if (fileName.endsWith('.html')) footerLang.innerText = "HTML";
+        else if (fileName.endsWith('.json')) footerLang.innerText = "JSON";
+        else if (fileName.endsWith('.md')) footerLang.innerText = "Markdown";
+        else if (fileName.endsWith('.css')) footerLang.innerText = "CSS";
+    }
+
+    function closeFileTab(event, fileName) {
+        event.stopPropagation();
+        openFilesList = openFilesList.filter(f => f !== fileName);
+        
+        if (currentlyActiveFile === fileName && openFilesList.length > 0) {
+            currentlyActiveFile = openFilesList[openFilesList.length - 1];
+        } else if (openFilesList.length === 0) {
+            alert("Resetting default workspace environment views.");
+            openFilesList = ['about.html', 'projects.html', 'experience.md', 'education.md', 'skills.json', 'contact.css'];
+            currentlyActiveFile = 'about.html';
+        }
+        openFile(currentlyActiveFile);
+    }
+
+    function toggleSidebarView() {
+        const sidebar = document.getElementById('explorer-sidebar');
+        sidebarOpenState = !sidebarOpenState;
+        
+        if (!sidebarOpenState) {
+            gsap.to(sidebar, { width: 0, opacity: 0, duration: 0.3, ease: "power2.inOut", onComplete: () => sidebar.style.display = 'none' });
+        } else {
+            sidebar.style.display = 'flex';
+            gsap.to(sidebar, { width: 250, opacity: 1, duration: 0.3, ease: "power2.inOut" });
+        }
+    }
+
+    // --- TERMINAL CONTROLS SIMULATOR ---
+    function focusTerminalCmd() {
+        document.getElementById('terminal-shell-input').focus();
+    }
+
+    function clearTerminal() {
+        document.getElementById('term-history-log').innerHTML = '<div>Console workspace log flushed. Type help for info...</div>';
+    }
+
+    function initTerminalEngine() {
+        const inputField = document.getElementById('terminal-shell-input');
+        
+        inputField.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const cmd = this.value.trim().toLowerCase();
+                const log = document.getElementById('term-history-log');
+                
+                if(!cmd) return;
+
+                log.insertAdjacentHTML('beforeend', `<div><span class="prompt-line">➔ ~/portfolio</span> <span class="prompt-cmd">${this.value}</span></div>`);
+                
+                let outputResponse = '';
+                switch(cmd) {
+                    case 'help':
+                        outputResponse = `<div>Available commands:<br>
+                                          &nbsp;&nbsp;<span style='color:#e34f26;'>about</span> - Profile summary<br>
+                                          &nbsp;&nbsp;<span style='color:#e34f26;'>projects</span> - Current portfolio work<br>
+                                          &nbsp;&nbsp;<span style='color:#cbd435;'>skills</span> - Core development stack<br>
+                                          &nbsp;&nbsp;<span style='color:#569cd6;'>contact</span> - Reach out info<br>
+                                          &nbsp;&nbsp;<span style='color:#ff5f56;'>clear</span> - Clear the terminal</div>`;
+                        break;
+                    case 'about':
+                        outputResponse = `<div style="color: #a5a5a5;">Frinze Jhun Morales – Web Developer based in General Trias, Cavite. I specialize in modernizing layouts, refining user interfaces, and upgrading front-end code bases to match brand standards and optimize performance.</div>`;
+                        break;
+                    case 'projects':
+                        outputResponse = `<div style="color: #e34f26;">- BigBrew E-Commerce Platform: HTML, CSS, JavaScript, PHP, MySQL (XAMPP)<br>- Krono Property Management: ongoing web development and UX improvements</div>`;
+                        break;
+                    case 'skills':
+                        outputResponse = `<div style="color: #cbd435;">Languages: HTML, CSS, JavaScript, PHP, Python, Lua<br>Database: MySQL<br>Tools: XAMPP, Visual Studio Code, Git/GitHub, Vercel, Roblox Studio<br>Animation: GSAP</div>`;
+                        break;
+                    case 'contact':
+                        outputResponse = `<div style="color: #569cd6;">Email: <a href="https://mail.google.com/mail/?view=cm&fs=1&to=frinzeyt01@gmail.com&su=Hello%20Frinze&body=Hi%20Frinze%2C%0A%0AI%20would%20like%20to%20talk%20about%20a%20web%20project.%0A%0AThanks!" target="_blank" style="color:#4ec9b0; text-decoration: underline;">frinzeyt01@gmail.com</a><br>Phone: <a href="tel:+639760029750" style="color:#4ec9b0; text-decoration: underline;">+639760029750</a><br>WhatsApp: <a href="https://wa.me/639760029750" target="_blank" style="color:#4ec9b0; text-decoration: underline;">Chat</a><br>Instagram: <a href="https://www.instagram.com/moralesfrinze/" target="_blank" style="color:#4ec9b0; text-decoration: underline;">moralesfrinze</a><br>Facebook: <a href="https://www.facebook.com/Frinze.Morales" target="_blank" style="color:#4ec9b0; text-decoration: underline;">Frinze.Morales</a><br>LinkedIn: <a href="https://www.linkedin.com/in/frinze-morales-329095363/" target="_blank" style="color:#4ec9b0; text-decoration: underline;">frinze-morales</a></div>`;
+                        break;
+                    case 'clear':
+                        clearTerminal();
+                        this.value = '';
+                        return;
+                    default:
+                        outputResponse = `<div style="color:#ff5f56;">Command context error: '${cmd}' not recognized. Type 'help' for parameters list.</div>`;
+                }
+                
+                log.insertAdjacentHTML('beforeend', `<div style="margin-bottom: 8px;">${outputResponse}</div>`);
+                this.value = '';
+                log.scrollTop = log.scrollHeight;
+            }
+        });
+    }
+
+    function initCustomCursor() {
+        const cursor = document.getElementById('cursor-dot');
+        if (!cursor || !window.matchMedia('(pointer: fine)').matches) return;
+        document.body.classList.add('has-custom-cursor');
+
+        document.addEventListener('mousemove', event => {
+            cursor.style.left = `${event.clientX}px`;
+            cursor.style.top = `${event.clientY}px`;
+        });
+
+        document.addEventListener('mousedown', () => cursor.classList.add('cursor-active'));
+        document.addEventListener('mouseup', () => cursor.classList.remove('cursor-active'));
+    }
+
+    function checkOrientation() {
+        const warning = document.getElementById('orientation-warning');
+        const isPortrait = window.matchMedia('(orientation: portrait)').matches;
+        const isMobile = window.matchMedia('(max-width: 900px)').matches;
+        if (isMobile && isPortrait) {
+            warning.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        } else {
+            warning.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+</script>
+
+<style>
+    @keyframes pulse {
+        0% { opacity: 0.4; }
+        50% { opacity: 1; }
+        100% { opacity: 0.4; }
+    }
+</style>
+
 </body>
-
 </html>
